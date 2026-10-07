@@ -85,9 +85,9 @@ export default function App() {
 
       setDeviceName(device.name ?? PC_NAME);
       setIsConnected(true);
-    } catch {
+      } catch (e: any) {
       setMode(null);
-      setError(t('error'));
+      setError('BLE: ' + (e?.message ?? String(e)));
     } finally {
       setIsConnecting(false);
     }
@@ -128,8 +128,8 @@ export default function App() {
     try {
       await BleClient.write(id, SERVICE_UUID, CHAR_UUID, numbersToDataView([cmd]));
       setIsLocked(cmd === CMD_LOCK);
-    } catch {
-      setError(t('error'));
+     } catch (e: any) {
+      setError('BLE: ' + (e?.message ?? String(e)));
     }
   };
 

@@ -1,0 +1,10 @@
+{
+  "appId": "com.pclock.app",
+  "appName": "PC Lock",
+  "webDir": "dist",
+  "plugins": {
+    "BluetoothLe": {
+      "androidNeverForLocation": true
+    }
+  }
+}

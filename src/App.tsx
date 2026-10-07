@@ -71,7 +71,7 @@ export default function App() {
     setError(null);
     try {
       // تفتح نافذة أندرويد لاختيار جهاز PC-Lock
-    const device = await BleClient.requestDevice({ namePrefix: 'SABER-RAFIK' });
+   const device = await BleClient.requestDevice({ services: [SERVICE_UUID] });
       deviceIdRef.current = device.deviceId;
 
       await BleClient.connect(device.deviceId, () => {

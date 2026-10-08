@@ -17,11 +17,11 @@ import { twMerge } from 'tailwind-merge';
 import { BleClient, numbersToDataView } from '@capacitor-community/bluetooth-le';
 
 // ==========================================================
-// إعدادات البلوتوث — يجب أن تطابق برنامج الكمبيوتر (المرحلة 2)
+// إعدادات البلوتوث — يجب أن تطابق برنامج الكمبيوتر
 // ==========================================================
 const SERVICE_UUID = 'a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d';
 const CHAR_UUID    = 'b2c3d4e5-f6a7-4b8c-9d0e-1f2a3b4c5d6e';
-const PC_NAME      = 'PC-Lock';
+const PC_NAME      = 'Saber-Rafik'; // اسم جهاز الكمبيوتر
 
 // الأوامر المتفق عليها مع الكمبيوتر
 const CMD_LOCK   = 0x01; // قفل
@@ -70,12 +70,11 @@ export default function App() {
     setIsConnecting(true);
     setError(null);
     try {
-      // تفتح نافذة أندرويد لاختيار جهاز PC-Lock
-  const device = await BleClient.requestDevice({ namePrefix: 'SABER-RAFIK' });
+      // نبحث بالاسم — ويندوز لا يذيع معرّف الخدمة في إشارة البث
+      const device = await BleClient.requestDevice({ namePrefix: PC_NAME });
       deviceIdRef.current = device.deviceId;
 
       await BleClient.connect(device.deviceId, () => {
-        // انقطاع مفاجئ (الكمبيوتر طُفئ مثلًا)
         setIsConnected(false);
         setIsLocked(true);
         setDeviceName(null);
@@ -85,7 +84,7 @@ export default function App() {
 
       setDeviceName(device.name ?? PC_NAME);
       setIsConnected(true);
-      } catch (e: any) {
+    } catch (e: any) {
       setMode(null);
       setError('BLE: ' + (e?.message ?? String(e)));
     } finally {
@@ -128,7 +127,7 @@ export default function App() {
     try {
       await BleClient.write(id, SERVICE_UUID, CHAR_UUID, numbersToDataView([cmd]));
       setIsLocked(cmd === CMD_LOCK);
-     } catch (e: any) {
+    } catch (e: any) {
       setError('BLE: ' + (e?.message ?? String(e)));
     }
   };

@@ -71,7 +71,10 @@ export default function App() {
     setError(null);
     try {
       // نبحث بالاسم — ويندوز لا يذيع معرّف الخدمة في إشارة البث
-      const device = await BleClient.requestDevice({ namePrefix: PC_NAME });
+      const device = await BleClient.requestDevice({
+  acceptAllDevices: true,
+  optionalServices: [SERVICE_UUID],
+});
       deviceIdRef.current = device.deviceId;
 
       await BleClient.connect(device.deviceId, () => {
